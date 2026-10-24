@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Sinfonia de Ana Gleice 🎂 Um Presente de Aniversário</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Standalone Canvas Confetti (Zero CDN latency / 100% offline) -->
+    <script src="js/vendor/confetti.browser.min.js"></script>
+    <style>
+        @media (max-width: 768px) {
+            #mobile-dpad {
+                display: grid !important;
+                grid-template-columns: repeat(3, 48px);
+                grid-template-rows: repeat(3, 48px);
+                position: absolute;
+                bottom: 24px;
+                left: 24px;
+                z-index: 20;
+                gap: 6px;
+            }
+            #ctrl-up { grid-column: 2; grid-row: 1; }
+            #ctrl-left { grid-column: 1; grid-row: 2; }
+            #ctrl-right { grid-column: 3; grid-row: 2; }
+            #ctrl-down { grid-column: 2; grid-row: 3; }
+            .dpad-btn {
+                width: 48px !important;
+                height: 48px !important;
+                min-width: 44px;
+                min-height: 44px;
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                background: rgba(15, 23, 42, 0.65);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 12px;
+                color: #fef08a;
+                font-size: 18px;
+                touch-action: none;
+            }
+        }
+        @media (min-width: 769px) {
+            #mobile-dpad { display: none !important; }
+        }
+    </style>
+</head>
+<body class="relative bg-slate-950 text-white overflow-hidden select-none">
+
+    <!-- 2D Canvas Viewport Container -->
+    <div id="canvas-container" class="absolute inset-0 w-full h-full z-0">
+        <canvas id="game-canvas" class="block w-full h-full"></canvas>
+    </div>
+
+    <!-- Cinema Letterbox Overlays -->
+    <div id="letterbox-top" class="letterbox-overlay"></div>
+    <div id="letterbox-bottom" class="letterbox-overlay"></div>
+
+    <!-- Soft Dreamy Fade Transition Curtain -->
+    <div id="fade-curtain" class="absolute inset-0 bg-slate-950 pointer-events-none transition-opacity duration-700 opacity-0 z-30"></div>
+
+    <!-- Top Storybook UI Bar -->
+    <header class="absolute top-4 left-4 right-4 flex items-center justify-between z-20 pointer-events-none">
+        <!-- Stage Badge -->
+        <div class="glass-panel py-2 px-4 rounded-full flex items-center gap-2.5 pointer-events-auto border border-white/10">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span id="stage-badge" class="font-semibold text-xs md:text-sm tracking-wide text-amber-200">FASE 1: O BOSQUE DAS MELODIAS</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2 pointer-events-auto">
+            <button id="btn-mixtape" aria-label="Abrir Mixtape da Ana" class="glass-panel btn-squish py-2 px-3.5 rounded-full text-xs font-semibold text-amber-300 border border-amber-400/30 hover:border-amber-400 flex items-center gap-1.5 transition-colors shadow-lg">
+                <span>📼</span> <span class="hidden sm:inline">Mixtape da Ana</span>
+            </button>
+            <button id="btn-open-letter" aria-label="Ler Carta do Davi" class="glass-panel btn-squish py-2 px-3.5 rounded-full text-xs font-semibold text-slate-200 border border-white/10 hover:border-amber-400/40 flex items-center gap-1.5 transition-colors">
+                <span class="text-amber-300">✉</span> <span class="hidden sm:inline">Carta do Davi</span>
+            </button>
+            <button id="btn-screenshot" aria-label="Tirar Foto Souvenir Polaroid" class="glass-panel btn-squish py-2 px-3.5 rounded-full text-xs font-semibold text-slate-200 border border-white/10 hover:border-amber-400/40 flex items-center gap-1.5 transition-colors">
+                <span class="text-amber-300">✦</span> <span class="hidden sm:inline">Foto Souvenir</span>
+            </button>
+            <button id="btn-mute" aria-label="Alternar som do jogo" class="glass-panel btn-squish py-2 px-3.5 rounded-full text-xs font-semibold text-slate-200 border border-white/10 hover:border-amber-400/40 flex items-center gap-1.5 transition-colors">
+                🔊 Som Ligado
+            </button>
+        </div>
+    </header>
+
+    <!-- Mid-Air Glide Prompt Indicator -->
+    <div id="glide-indicator" class="hidden">
+        🪂 [Espaço] Guarda-Chuva Aberto
+    </div>
+
+    <!-- Contextual Interaction Prompt Tooltip -->
+    <div id="interaction-prompt" class="hidden" role="button" tabindex="0" aria-label="Interagir">
+        <span>[E] Interagir</span>
+    </div>
+
+    <!-- Emote Quickbar -->
+    <div id="emote-quickbar">
+        <button class="emote-btn btn-squish" id="btn-emote-1" aria-label="Pirueta Musical (Tecla 1)" title="Pirueta Musical (Tecla 1)">
+            <span>🌸</span>
+            <span class="key-hint">1</span>
+        </button>
+        <button class="emote-btn btn-squish" id="btn-emote-2" aria-label="Harpa de Luz (Tecla 2)" title="Harpa de Luz (Tecla 2)">
+            <span>🎼</span>
+            <span class="key-hint">2</span>
+        </button>
+        <button class="emote-btn btn-squish" id="btn-emote-3" aria-label="Sentar e Contemplar (Tecla 3)" title="Sentar & Contemplar (Tecla 3)">
+            <span>🪑</span>
+            <span class="key-hint">3</span>
+        </button>
+        <button class="emote-btn btn-squish" id="btn-emote-4" aria-label="Acenar com Carinho (Tecla 4)" title="Acenar com Carinho (Tecla 4)">
+            <span>✨</span>
+            <span class="key-hint">4</span>
+        </button>
+    </div>
+
+    <!-- Bottom Storybook Dialogue Box -->
+    <div id="dialogue-box" class="hidden absolute bottom-6 left-1/2 -translate-x-1/2 w-11/12 max-w-2xl dialogue-card border border-white/15 rounded-2xl p-5 md:p-6 z-20 cursor-pointer flex gap-4 items-start relative">
+        <!-- Close / Dismiss Button -->
+        <button id="btn-dialogue-close" class="btn-dialogue-close" aria-label="Fechar diálogo" title="Fechar conversa">✕</button>
+
+        <!-- Speaker Avatar Portrait -->
+        <div id="dialogue-avatar" class="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-3xl md:text-4xl shrink-0">
+            🍄
+        </div>
+        
+        <!-- Text Content Area -->
+        <div class="flex-1 flex flex-col justify-between min-h-[64px]">
+            <div>
+                <h3 id="dialogue-name" class="font-['Fredoka'] font-semibold text-sm md:text-base text-amber-200 mb-1 tracking-wide">Toadbigode (Conselheiro Real)</h3>
+                <p id="dialogue-text" class="text-sm md:text-base text-slate-100 leading-relaxed font-normal"></p>
+            </div>
+            
+            <div id="dialogue-prompt" class="self-end mt-2 text-xs font-semibold text-amber-300 tracking-wider transition-opacity flex items-center gap-2">
+                <span class="hidden sm:inline text-amber-300/70 text-[11px] uppercase">Espaço / Toque</span>
+                <button id="btn-dialogue-advance" class="btn-dialogue-advance" aria-label="Avançar diálogo">Avançar ▶</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Virtual Touch Joystick & Action Button -->
+    <div id="mobile-joystick-zone">
+        <div id="joystick-thumb"></div>
+    </div>
+    <div id="mobile-dpad">
+        <button id="ctrl-up" class="dpad-btn" aria-label="Mover para frente">▲</button>
+        <button id="ctrl-down" class="dpad-btn" aria-label="Mover para trás">▼</button>
+        <button id="ctrl-left" class="dpad-btn" aria-label="Mover para esquerda">◀</button>
+        <button id="ctrl-right" class="dpad-btn" aria-label="Mover para direita">▶</button>
+    </div>
+    <button id="mobile-action-btn" class="btn-squish" aria-label="Ação especial">
+        ✨
+    </button>
+
+    <!-- Start Overlay Screen (Unlocks Web Audio Autoplay) -->
+    <div id="start-overlay" class="absolute inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-500">
+        <div class="glass-panel border border-white/15 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl flex flex-col items-center">
+            <h1 class="font-['Fredoka'] font-semibold text-2xl md:text-3xl text-amber-100 tracking-wide mb-2">
+                A Sinfonia de Ana Gleice
+            </h1>
+            <p class="text-xs md:text-sm text-slate-300 mb-6 font-normal leading-relaxed">
+                Um presente de aniversário de <span class="text-amber-300 font-semibold">Davi (toadbigode)</span> para a musicista mais especial.
+            </p>
+
+            <button id="btn-start-game" class="btn-squish w-full py-3.5 px-6 rounded-2xl font-['Fredoka'] font-semibold text-base bg-amber-400 hover:bg-amber-300 text-slate-950 transition-colors shadow-lg shadow-amber-400/15 flex items-center justify-center gap-2 mb-4">
+                <span>Iniciar Passeio</span>
+            </button>
+
+            <p class="text-xs text-slate-400 font-normal">
+                Use W, A, S, D para passear • Fones de ouvido recomendados
+            </p>
+        </div>
+    </div>
+
+    <!-- Storybook Love Letter Parchment Modal -->
+    <div id="letter-modal" class="hidden modal-overlay backdrop-blur-sm absolute inset-0 z-40 items-center justify-center p-4">
+        <div class="parchment rounded-3xl p-7 md:p-10 max-w-xl w-full text-stone-900 relative shadow-2xl animate-[scaleIn_0.3s_ease]">
+            <button id="btn-close-letter" aria-label="Fechar carta de amor" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-900/10 hover:bg-stone-900/20 text-stone-800 font-bold flex items-center justify-center transition">✕</button>
+            
+            <div class="text-center mb-6">
+                <h2 class="font-['Fredoka'] font-semibold text-2xl text-stone-900 tracking-wide">Feliz Aniversário, Ana Gleice!</h2>
+                <p class="text-xs text-amber-900/80 font-medium mt-1">De: Davi Nascimento Chaves Homen (toadbigode)</p>
+            </div>
+
+            <div class="handwriting text-xl md:text-2xl text-stone-900 leading-relaxed space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                <p>
+                    Meu amor, hoje o dia amanheceu mais bonito porque é o dia em que o mundo teve a bênção de receber você.
+                </p>
+                <p>
+                    Eu criei este pequeno universo 3D para te lembrar, em cada detalhe, o quanto você é rara e amada. O conselheiro Toadbigode sempre foi uma extensão do meu carinho por você: cuidando de você de longe e te acompanhando a cada nota.
+                </p>
+                <div class="py-2 pl-3 my-2 font-sans text-sm md:text-base text-stone-800 space-y-2">
+                    <p class="font-semibold text-stone-900">Os 3 Motivos Pelos Quais Eu Te Amo:</p>
+                    <p>1. <b>Seu dom e sensibilidade com a música</b>, que transforma cada dia simples em pura harmonia e poesia.</p>
+                    <p>2. <b>Sua força serena e doçura infinita</b>, sendo a estrela-guia que ilumina meus caminhos e acalma qualquer tempestade.</p>
+                    <p>3. <b>A certeza de que quero construir uma vida inteira ao seu lado</b>, celebrando todos os aniversários e segurando a sua mão para sempre.</p>
+                </div>
+                <p>
+                    Que o seu novo ano de vida venha repleto de partituras alegres, paz no coração e muitos momentos doces juntos.
+                </p>
+                <p class="text-right font-bold text-2xl text-stone-900 pt-2">
+                    Com todo o meu amor e carinho,<br>
+                    <b>Davi (toadbigode) 💙</b>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mixtape Cassette Player Modal -->
+    <div id="mixtape-modal" class="hidden modal-overlay absolute inset-0 z-40 items-center justify-center p-4">
+        <div class="cassette-tape p-6 max-w-lg w-full text-white relative shadow-2xl animate-[scaleIn_0.3s_ease]">
+            <button id="btn-close-mixtape" aria-label="Fechar Mixtape" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center transition">✕</button>
+            
+            <!-- Cassette Header / Handwriting Label -->
+            <div class="cassette-label p-3 text-center mb-5">
+                <p class="text-xs uppercase tracking-widest font-sans font-bold text-amber-900">★ STEREO CASSETTE • TYPE II CrO2 ★</p>
+                <h2 class="text-2xl font-bold mt-0.5 text-stone-950">A Mixtape de Aninha • Lado A & B</h2>
+                <p class="text-xs font-sans text-stone-700">Com amor infinito, do seu Davi (Toadbigode)</p>
+            </div>
+
+            <!-- Tape Window with Animated Spools -->
+            <div class="tape-window p-4 flex items-center justify-around mb-5">
+                <div id="spool-left" class="tape-spool spinning"></div>
+                <div class="flex-1 mx-4 h-1.5 bg-amber-900/60 rounded-full overflow-hidden flex items-center">
+                    <div id="tape-ribbon" class="h-1 bg-amber-700/80 w-full"></div>
+                </div>
+                <div id="spool-right" class="tape-spool spinning"></div>
+            </div>
+
+            <!-- Current Track Info -->
+            <div class="py-2 text-center mb-4">
+                <span id="mixtape-now-playing-label" class="text-[11px] text-amber-400 uppercase tracking-widest font-bold">Tocando Agora:</span>
+                <h3 id="mixtape-current-track-title" class="font-['Fredoka'] font-semibold text-lg text-white">Faixa 1: Bosque do Primeiro Olhar</h3>
+                <p id="mixtape-current-track-desc" class="text-xs text-slate-300">Violão de nylon acústico, flauta doce e arpejos suaves</p>
+            </div>
+
+            <!-- Track List Selection -->
+            <div class="space-y-1 mb-5">
+                <button class="mixtape-track-btn w-full py-2.5 px-3 rounded-lg hover:bg-white/5 flex items-center justify-between text-left transition" data-track="1">
+                    <span class="text-sm font-medium flex items-center gap-2"><span>🍃</span> 1. Bosque do Primeiro Olhar</span>
+                    <span class="text-xs text-amber-300 font-semibold">Acústico</span>
+                </button>
+                <button class="mixtape-track-btn w-full py-2.5 px-3 rounded-lg hover:bg-white/5 flex items-center justify-between text-left transition" data-track="2">
+                    <span class="text-sm font-medium flex items-center gap-2"><span>🪐</span> 2. Voo sob a Nebulosa Lilás</span>
+                    <span class="text-xs text-amber-300 font-semibold">Lofi & Celesta</span>
+                </button>
+                <button class="mixtape-track-btn w-full py-2.5 px-3 rounded-lg hover:bg-white/5 flex items-center justify-between text-left transition" data-track="3">
+                    <span class="text-sm font-medium flex items-center gap-2"><span>🎂</span> 3. A Sinfonia de Nós Dois</span>
+                    <span class="text-xs text-amber-300 font-semibold">Piano & Orquestra</span>
+                </button>
+            </div>
+
+            <!-- Mechanical Cassette Buttons -->
+            <div class="flex items-center justify-center gap-3">
+                <button id="btn-mixtape-prev" class="btn-squish px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold text-sm border border-white/10">
+                    ⏮ Faixa Anterior
+                </button>
+                <button id="btn-mixtape-play" class="btn-squish px-6 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-['Fredoka'] font-bold text-base shadow-lg shadow-amber-400/20">
+                    ⏸ Pausar Fita
+                </button>
+                <button id="btn-mixtape-next" class="btn-squish px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold text-sm border border-white/10">
+                    Próxima ⏭
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts in Deterministic Dependency Order -->
+    <script src="js/audio.js?v=ac_update"></script>
+    <script src="js/capture.js?v=ac_update"></script>
+    <script src="js/dialogue.js?v=ac_update"></script>
+    <script src="js/engine2d.js?v=ac_update"></script>
+    <script src="js/main.js?v=ac_update"></script>
+</body>
+</html>

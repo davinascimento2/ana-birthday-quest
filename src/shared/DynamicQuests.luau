@@ -1,0 +1,98 @@
+--!strict
+-- Generated automatically by scripts/gemini_quest_gen.py (Gemini 3.8 Flash & Google Antigravity SDK)
+
+export type DynamicQuestDef = {
+	Id: string,
+	Giver: string,
+	Title: string,
+	Description: string,
+	TargetPollen: number,
+	RewardHoney: number,
+	RewardTokens: number,
+	RewardGems: number,
+}
+
+local DynamicQuests: { [string]: DynamicQuestDef } = {
+	["quest_bb_1"] = {
+		Id = "quest_bb_1",
+		Giver = "Black Bear",
+		Title = "Primeira Colheita Dourada",
+		Description = "Olá jovem apicultor! Para começar sua jornada, colha 150 de Pólen no Campo de Girassóis.",
+		TargetPollen = 150,
+		RewardHoney = 350,
+		RewardTokens = 1,
+		RewardGems = 5,
+	},
+	["quest_bb_2"] = {
+		Id = "quest_bb_2",
+		Giver = "Black Bear",
+		Title = "A Magia dos Trevos de Quatro Folhas",
+		Description = "Muito bem! Agora vá até o Campo de Trevos e colha 400 de Pólen para fortalecer sua colmeia.",
+		TargetPollen = 400,
+		RewardHoney = 1200,
+		RewardTokens = 2,
+		RewardGems = 10,
+	},
+	["quest_bb_3"] = {
+		Id = "quest_bb_3",
+		Giver = "Black Bear",
+		Title = "Mestre dos Girassóis",
+		Description = "Prove sua dedicação colhendo 1.000 de Pólen no Campo de Girassóis com seu novo coletor!",
+		TargetPollen = 1000,
+		RewardHoney = 3500,
+		RewardTokens = 2,
+		RewardGems = 15,
+	},
+	["quest_sb_1"] = {
+		Id = "quest_sb_1",
+		Giver = "Science Bear",
+		Title = "Análise Micológica",
+		Description = "Fascinante! Preciso de amostras de esporos do Bosque dos Cogumelos. Colha 2.500 de Pólen vermelho.",
+		TargetPollen = 2500,
+		RewardHoney = 8000,
+		RewardTokens = 3,
+		RewardGems = 25,
+	},
+	["quest_sb_2"] = {
+		Id = "quest_sb_2",
+		Giver = "Science Bear",
+		Title = "Teias Eletrizantes",
+		Description = "Cuidado com o covil da Aranha! Colete 6.000 de Pólen no Prado das Aranhas para calibrar o reator.",
+		TargetPollen = 6000,
+		RewardHoney = 22000,
+		RewardTokens = 4,
+		RewardGems = 50,
+	},
+	["quest_claw_1"] = {
+		Id = "quest_claw_1",
+		Giver = "Claw Master",
+		Title = "A Sorte da Garra Arcana",
+		Description = "Conquiste um prêmio lendário na Máquina de Garra do Hub Central e transforme 10.000 de Pólen!",
+		TargetPollen = 10000,
+		RewardHoney = 45000,
+		RewardTokens = 5,
+		RewardGems = 100,
+	},
+	["quest_sb_3"] = {
+		Id = "quest_sb_3",
+		Giver = "Science Bear",
+		Title = "O Ápice Tropical do Abacaxi",
+		Description = "Suba até a Montanha do Abacaxi e colete 25.000 de Pólen concentrado sob o sol dourado.",
+		TargetPollen = 25000,
+		RewardHoney = 120000,
+		RewardTokens = 6,
+		RewardGems = 200,
+	},
+	["quest_bb_endgame"] = {
+		Id = "quest_bb_endgame",
+		Giver = "Black Bear",
+		Title = "Lenda Celestial do Oásis de Coco",
+		Description = "Você atingiu o reino dos mestres. Colha 100.000 de Pólen no Oásis de Coco e receba a coroa apícola!",
+		TargetPollen = 100000,
+		RewardHoney = 1000000,
+		RewardTokens = 10,
+		RewardGems = 1000,
+	},
+}
+
+return DynamicQuests

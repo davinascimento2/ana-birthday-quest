@@ -1,0 +1,14 @@
+{
+  "name": "ana-birthday-quest",
+  "version": "1.0.0",
+  "description": "A Sinfonia de Ana Gleice - Cozy 3D Storybook Birthday Game",
+  "main": "js/main.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:e2e": "playwright test tests/e2e.spec.js",
+    "test:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0"
+  }
+}

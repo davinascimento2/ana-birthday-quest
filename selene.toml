@@ -1,0 +1,6 @@
+std = "roblox"
+
+[rules]
+empty_loop = "allow"
+unused_variable = "warn"
+multiple_statements = "warn"

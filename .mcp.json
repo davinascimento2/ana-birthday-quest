@@ -1,0 +1,44 @@
+{
+  "mcpServers": {
+    "higgsfield": {
+      "command": "npx",
+      "args": ["-y", "@higgsfield/mcp-server"],
+      "env": {
+        "HIGGSFIELD_API_KEY": "${HIGGSFIELD_API_KEY}"
+      }
+    },
+    "roblox-studio": {
+      "command": "C:\\Users\\Davi\\AppData\\Local\\Roblox\\Versions\\version-7aaa6838d36c4448\\StudioMCP.exe",
+      "args": []
+    },
+    "tripo3d": {
+      "command": "npx",
+      "args": ["-y", "tripo3d-mcp"],
+      "env": {
+        "TRIPO3D_API_KEY": "${TRIPO3D_API_KEY}"
+      }
+    },
+    "elevenlabs": {
+      "command": "npx",
+      "args": ["-y", "@elevenlabs/mcp-server"],
+      "env": {
+        "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}"
+      }
+    },
+    "replicate": {
+      "command": "npx",
+      "args": ["-y", "replicate-mcp"],
+      "env": {
+        "REPLICATE_API_TOKEN": "${REPLICATE_API_TOKEN}"
+      }
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"]
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}

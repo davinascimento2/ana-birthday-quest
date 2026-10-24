@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4">
+	<Item class="ColorCorrectionEffect" referent="RBX_1210">
+		<Properties>
+			<string name="Name">JuiceColorCorrection</string>
+			<bool name="Enabled">true</bool>
+			<float name="Brightness">0.05</float>
+			<float name="Contrast">0.15</float>
+			<float name="Saturation">0.35</float>
+		</Properties>
+	</Item>
+</roblox>

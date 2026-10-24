@@ -1,0 +1,45 @@
+{
+  "name": "DopamineCrush",
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$className": "Workspace",
+      "Zones": {
+        "$path": "assets/World.rbxmx"
+      }
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "JuiceColorCorrection": {
+        "$path": "assets/ColorCorrection.rbxmx"
+      },
+      "JuiceBloom": {
+        "$path": "assets/Bloom.rbxmx"
+      }
+    },
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Shared": {
+        "$path": "src/shared"
+      },
+      "Packages": {
+        "$path": "Packages"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "Server": {
+        "$path": "src/server"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "Client": {
+          "$path": "src/client"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+Packages/
+
+# Logs & Test outputs
+*.log
+test-results/
+test-results.json
+*.png
+!ana_birthday_quest/render_check.png
+
+# Agent & Temp directories
+.agent/
+.agents/
+.gemini/
+.impeccable/
+.taste-skill/
+.vercel/
+
+# Heavy local dumps & rip caches
+ripped_models/
+test_sketchfang/
+vibe-coding-toolkit/
+

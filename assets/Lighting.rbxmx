@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4">
+	<Item class="ColorCorrectionEffect" referent="RBX_54">
+		<Properties>
+			<string name="Name">JuiceColorCorrection</string>
+			<bool name="Enabled">true</bool>
+			<float name="Brightness">0.05</float>
+			<float name="Contrast">0.15</float>
+			<float name="Saturation">0.35</float>
+		</Properties>
+	</Item>
+	<Item class="BloomEffect" referent="RBX_55">
+		<Properties>
+			<string name="Name">JuiceBloom</string>
+			<bool name="Enabled">true</bool>
+			<float name="Intensity">1.2</float>
+			<float name="Size">24.0</float>
+			<float name="Threshold">1.8</float>
+		</Properties>
+	</Item>
+	<Item class="Sky" referent="RBX_56">
+		<Properties>
+			<string name="Name">JuiceSky</string>
+			<bool name="CelestialBodiesShown">true</bool>
+			<int name="StarCount">3000</int>
+		</Properties>
+	</Item>
+</roblox>

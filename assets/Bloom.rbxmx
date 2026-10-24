@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4">
+	<Item class="BloomEffect" referent="RBX_1211">
+		<Properties>
+			<string name="Name">JuiceBloom</string>
+			<bool name="Enabled">true</bool>
+			<float name="Intensity">1.2</float>
+			<float name="Size">24.0</float>
+			<float name="Threshold">1.8</float>
+		</Properties>
+	</Item>
+</roblox>
